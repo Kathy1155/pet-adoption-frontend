@@ -1,0 +1,245 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>寵物領養資訊網</title>
+    <!-- 更新 CSS 路徑 -->
+    <link rel="stylesheet" href="/src/asserts/styles/styles.css">
+    <link rel="icon" href="/src/asserts/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- 頁首 -->
+    <header>
+        <div class="header-left">
+            <!-- 點擊標題返回首頁 -->
+            <a>
+                <h1>寵物領養資訊網</h1>
+            </a>
+        </div>
+        <div class="header-right">
+            <!-- 判斷是否登入 -->
+            <script>
+                // 讀取 localStorage 中的使用者資訊
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    
+                if (currentUser) {
+                    // 若已登入，顯示個人資料和登出按鈕
+                    document.write('<a href="/profile" class="button">個人資料</a>');
+                    document.write('<a href="#" class="button" onclick="logout()">登出</a>');
+                } else {
+                    // 若未登入，顯示登入與註冊按鈕
+                    document.write('<a href="/login" class="button">登入</a>');
+                    document.write('<a href="/register-page" class="button">註冊</a>');
+                }
+    
+                // 登出函數
+                function logout() {
+                    // 移除 localStorage 中的 currentUser 資料
+                    localStorage.removeItem('currentUser');
+                    // 刷新頁面
+                    window.location.reload();
+                }
+            </script>
+        </div>
+    </header>
+    
+    
+<div class = "all-container">
+    <div class="search-section">
+        <h3>請選擇欲查詢的資料</h3>
+    
+        <!-- 縣市篩選 -->
+        <div class="form-row">
+            <label for="city">縣市:</label>
+            <select id="city">
+                <option value="" selected>選擇縣市</option>
+                    <option value="台北市">台北市</option>
+                    <option value="新北市">新北市</option>
+                    <option value="桃園市">桃園市</option>
+                    <option value="台中市">台中市</option>
+                    <option value="台南市">台南市</option>
+                    <option value="高雄市">高雄市</option>
+                    <option value="基隆市">基隆市</option>
+                    <option value="新竹市">新竹市</option>
+                    <option value="新竹縣">新竹縣</option>
+                    <option value="苗栗縣">苗栗縣</option>
+                    <option value="彰化縣">彰化縣</option>
+                    <option value="南投縣">南投縣</option>
+                    <option value="雲林縣">雲林縣</option>
+                    <option value="嘉義市">嘉義市</option>
+                    <option value="嘉義縣">嘉義縣</option>
+                    <option value="屏東縣">屏東縣</option>
+                    <option value="宜蘭縣">宜蘭縣</option>
+                    <option value="花蓮縣">花蓮縣</option>
+                    <option value="台東縣">台東縣</option>
+                    <option value="澎湖縣">澎湖縣</option>
+                    <option value="金門縣">金門縣</option>
+                    <option value="連江縣">連江縣</option>
+                </optgroup>
+            </select>
+        </div>
+    
+        <!-- 性別篩選 -->
+        <div class="form-row">
+            <label for="gender">性別:</label>
+            <select id="gender">
+                <option value="" selected>選擇性別</option>
+                <option value="公">公</option>
+                <option value="母">母</option>
+            </select>
+        </div>
+    
+        <!-- 品種篩選 -->
+        <div class="form-row">
+            <label for="species">品種/物種:</label>
+            <input type="text" id="species" name="species" placeholder="請輸入品種/物種">
+        </div>
+    
+        <!-- 年齡篩選 -->
+        <div class="form-row">
+            <label for="age">入所年齡:</label>
+            <select id="age" name="age">
+                <option value="" selected>選擇年齡</option>
+                <option value="未離乳">未離乳</option>
+                <option value="幼齡">幼齡(離乳~1歲)</option>
+                <option value="成年">成年(1~7歲)</option>
+                <option value="老年">老年(7歲以上)</option>
+            </select>
+        </div>
+    
+        <!-- 收容所編號篩選 -->
+        <div class="form-row">
+            <label for="shelter-id">收容編號:</label>
+            <input type="number" id="shelter-id" name="shelter-id" placeholder="請輸入收容編號" min="1">
+        </div>
+    
+        <!-- 查詢按鈕 -->
+        <button type="button" class="btn btn-primary search-button" onclick="searchPets()">查詢</button>
+    </div>
+    
+    <!-- 結果區域 -->
+    <div id="pet-list">
+        <!-- 顯示寵物資料的區域 -->
+    </div>
+</div>
+
+    <!-- 頁面資訊 -->
+    <div class="page-info">
+         總頁數：1 / 總筆數：23
+    </div>
+
+    <script>
+        
+        // 從後端 API 獲取寵物資料
+        async function fetchPets(queryParams = {}) {
+            try {
+                // 將查詢參數轉為 URL 格式
+                const queryString = new URLSearchParams(queryParams).toString();
+                const response = await fetch(`http://localhost:5000/api/pets?${queryString}`); // 使用相對路徑以避免跨域問題
+    
+                // 確認 API 回應狀態
+                if (!response.ok) {
+                    console.error(`API 錯誤: ${response.status}`);
+                    throw new Error('無法獲取資料，請稍後再試');
+                }
+    
+                const pets = await response.json();
+    
+                // 確認資料格式是否為陣列
+                if (!Array.isArray(pets)) {
+                    console.error("後端返回的資料格式不正確:", pets);
+                    throw new Error('後端資料格式錯誤');
+                }
+    
+                const petListDiv = document.getElementById('pet-list');
+                petListDiv.innerHTML = ''; // 清空現有內容
+    
+                // 處理未找到結果的情況
+                if (pets.length === 0) {
+                    petListDiv.innerHTML = "<p>未找到符合條件的寵物。</p>";
+                    return;
+                }
+    
+                // 動態生成寵物資料
+                pets.forEach((pet) => {
+                    const petDiv = document.createElement('div');
+                    petDiv.className = 'pet-card'; // 卡片樣式類名
+                    petDiv.innerHTML = `
+                        <img src="${pet.photo_url}" alt="${pet.name}" class="pet-photo">
+                        <h3>${pet.shelter_id}</h3>
+                        <p>種類: ${pet.species}</p>
+                        <p>年齡: ${pet.age}</p>
+                        <p>城市: ${pet.city}</p>
+                        <p>性別: ${pet.gender}</p>
+                        <a href="/adopt" class="adopt-btn">我要領養</a>
+                    `;
+                    petListDiv.appendChild(petDiv);
+                });
+
+            } catch (error) {
+                console.error('Error fetching pet data:', error);
+                const petListDiv = document.getElementById('pet-list');
+                petListDiv.innerHTML = "<p>發生錯誤，請稍後再試。</p>";
+            }
+        }
+        
+        // 跳轉函數
+        function goToAdopt() {
+            window.location.href = "adopt.html";
+        }
+    
+        // 查詢寵物資料，根據表單內容發送請求
+        function searchPets() {
+            const city = document.getElementById('city').value.trim();
+            const gender = document.getElementById('gender').value.trim();
+            const species = document.getElementById('species').value.trim();
+            const age = document.getElementById('age').value.trim();
+            const shelterId = document.getElementById('shelter-id').value.trim();
+    
+            const queryParams = { city, gender, species, age, shelterId };
+    
+            // 移除空條件，避免發送多餘參數
+            Object.keys(queryParams).forEach((key) => {
+                if (!queryParams[key]) {
+                    delete queryParams[key];
+                }
+            });
+    
+            // 提示至少填寫一個搜尋條件
+            if (Object.keys(queryParams).length === 0) {
+                alert('請選擇至少一個搜尋條件');
+                return;
+            }
+    
+            // 調用 fetchPets 並傳入查詢參數
+            fetchPets(queryParams);
+        }
+    
+        // 頁面載入時自動顯示所有寵物
+        document.addEventListener('DOMContentLoaded', () => fetchPets());
+
+        // 顯示或隱藏 "向上箭頭" 按鈕
+        window.onscroll = function() {
+            const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                scrollToTopBtn.style.display = "block";  // 滾動到一定距離顯示按鈕
+            } else {
+                scrollToTopBtn.style.display = "none";   // 未滾動到一定距離隱藏按鈕
+            }
+        };
+
+        // 滾動到頁面頂部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'  // 平滑滾動
+            });
+        }
+
+    </script>
+
+    <!-- 向上箭頭按鈕 -->
+<button id="scrollToTopBtn" onclick="scrollToTop()">↑</button>
+
+</body>
+</html>

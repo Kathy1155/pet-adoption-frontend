@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>領養寵物</title>
+    <link rel="stylesheet" href="/src/asserts/styles/styles.css">
+    <link rel="icon" href="/src/asserts/favicon.ico" type="image/x-icon">
+<body>
+    <header>
+        <div class="header-left">
+            <h1>領養寵物</h1>
+        </div>
+        <div class="header-right">
+            <a href="/src/templates/home.html" class="button">返回首頁</a>
+        </div>
+    </header>
+
+    <div class="details-container">
+        <div id="pet-details" class="details-image"></div>
+
+        <div class="details-info">
+            <form id="adoption-form" action="/adopt/submit-adoption" method="POST"> <!-- 路徑已修正 -->
+
+                <label for="pet_id">編號</label>
+                <input type="text" id="pet_id" name="pet_id" placeholder="輸入寵物的編號" required>
+
+                <label for="name">姓名</label>
+                <input type="text" id="name" name="name" placeholder="輸入您的姓名" required>
+
+                <label for="phone">電話</label>
+                <input type="tel" id="phone" name="phone" placeholder="輸入您的聯絡電話" required>
+
+                <label for="email">電子郵件</label>
+                <input type="email" id="email" name="email" placeholder="輸入您的電子郵件" required>
+
+                <label for="experience">是否有飼養寵物經驗？</label>
+                <select id="experience" name="experience" required>
+                    <option value="">請選擇</option>
+                    <option value="yes">是</option>
+                    <option value="no">否</option>
+                </select>
+
+                <label for="message">其他想說的話（選填）</label>
+                <textarea id="message" name="message" placeholder="例如：為什麼想領養小花？或其他補充資訊..."></textarea>
+                <button type="submit" class="adopt-button">提交領養申請</button>
+            </form>
+
+            <script>
+                // 領養表單提交處理
+                document.getElementById("adoption-form").addEventListener("submit", function(event) {
+                    event.preventDefault(); // 防止表單默認提交
+
+                    // 收集領養表單資料
+                    const formData = {
+                        pet_id: document.getElementById("pet_id").value,  // 修正此處 ID
+                        name: document.getElementById("name").value,
+                        phone: document.getElementById("phone").value,
+                        email: document.getElementById("email").value,
+                        experience: document.getElementById("experience").value,
+                        message: document.getElementById("message").value
+                    };
+
+                    // 使用 fetch 發送 POST 請求
+                    fetch("http://localhost:5000/adopt/submit-adoption", { // 路徑已修正
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"  // 設置為 JSON 格式
+                        },
+                        body: JSON.stringify(formData)  // 將資料轉換為 JSON 格式
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json(); // 確保回傳為 JSON
+                        } else {
+                            throw new Error("提交領養申請失敗");
+                        }
+                    })
+                    .then(data => {
+                        alert(data.message || "領養申請提交成功！");
+                        // 領養成功後跳轉到確認頁面
+                        window.location.href = "/src/templates/home.html";
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert(error.message || "領養過程中發生錯誤，請稍後再試。");
+                    });
+                });
+            </script>
+            
+        </div>
+    </div>
+</body>
+</html>

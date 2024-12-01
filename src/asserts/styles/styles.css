@@ -1,0 +1,228 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ccc;
+    padding: 10px 10px; /* 調整header兩側的padding */
+    background-color: #F5F5DC; /* 米白色背景 */
+    max-width: 1200px; /* 設定最大寬度 */
+    margin: 0 auto; /* 使header在中間 */
+    position: relative; /* 使按鈕可以絕對定位 */
+}
+
+body {
+    font-family: "PingFang SC", "Microsoft JhengHei", Arial, sans-serif; /* 中文優先 PingFang，其次為微軟正黑體，然後是無襯線字體 */
+    margin: 0;
+    background-color: #F5F5DC; /* 米白色背景 */
+    padding: 0 10px; /* 兩側加10px的空間 */
+}
+
+
+/* 右側的按鈕區域移到右上角 */
+.header-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.header-left h1 {
+    margin: 0;
+}
+
+.header-right .button {
+    margin-left: 15px;
+    text-decoration: none;
+    padding: 5px 10px;
+    background-color: #B18C8C; /* 莫蘭迪紫 */
+    color: white;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.header-right .button:hover {
+    background-color: #8C6A6A; /* 按鈕的深紫色 */
+}
+
+
+
+
+/* 搜索栏样式 */
+.search-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 10px 10px; /* 調整header兩側的padding */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #F5F5DC; /* 米白色背景 */
+    width: 100%;
+    box-sizing: border-box; /* 包括内边距计算宽度 */
+}
+
+/* 宠物列表样式 */
+.pet-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 每行显示5个 */
+    gap: 20px !important; /* 增加间距并使用 !important 强制应用 */
+    grid-row-gap: 20px !important;
+    width: 100%;
+    max-width: 1200px; /* 保证宽度不超过父容器 */
+    padding: 10px 10px; /* 調整header兩側的padding */
+    box-sizing: border-box; /* 包括内边距计算宽度 */
+}
+
+/* 修改宠物项样式 */
+.pet-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 添加阴影 */
+    padding: 15px; /* 调整内边距 */
+    border-radius: 10px;
+    text-align: center;
+    background-color: #ffffff; /* 白色背景 */
+    display: inline-block;
+    transition: box-shadow 0.3s ease; /* 鼠标悬停时的过渡效果 */
+    margin: 5px; /* 为每张卡片增加外边距 */
+}
+
+.pet-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* 鼠标悬停时加深阴影 */
+}
+
+img.pet-photo {
+    width: 200px; /* 寬度設定為 200px */
+    height: 200px; /* 高度固定為 200px */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px; /* 調整圖片和文字的間距 */
+}
+
+.adopt-btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #B18C8C; /* 莫蘭迪紫 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.adopt-btn:hover {
+    background-color: #8C6A6A; /* 按鈕的深紫色 */
+}
+
+/* 所有按鈕樣式 */
+button {
+    padding: 10px 20px;
+    background-color: #B18C8C; /* 按鈕顏色 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 150px; /* 設定按鈕寬度 */
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #8C6A6A; /* 滑鼠懸停顏色 */
+}
+
+/*主頁下方切頁*/
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.nav-button {
+    padding: 5px 10px;
+    background-color: #B18C8C; /* 莫蘭迪紫 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.nav-button:hover {
+    background-color: #8C6A6A; /* 按鈕的深紫色 */
+}
+
+.page-select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin: 0 10px;
+    background-color: #F5F5DC; /* 米白色背景 */
+}
+
+.page-info {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    background-color: #F5F5DC; /* 米白色背景 */
+}
+
+/* 所有表單長相 */
+.form-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px; /* 限制表單寬度 */
+    margin: 0 auto; /* 使表單居中 */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+label {
+    font-size: 16px;
+}
+
+input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 250px; /* 設定輸入框寬度 */
+}
+
+.all-container {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 2px solid #ccc;
+    padding: 10px 10px; /* 調整header兩側的padding */
+    background-color: #F5F5DC; /* 米白色背景 */
+    max-width: 1200px; /* 設定最大寬度 */
+    margin: 0 auto; /* 使header在中間 */
+    position: relative; /* 使按鈕可以絕對定位 */
+}
+
+/* 固定右下角的向上箭頭按鈕 */
+#scrollToTopBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    color: white;
+    border: 2px solid #B18C8C; /* 設定邊框顏色和寬度 */
+    border-radius: 50%;
+    width: 50px; /* 設置寬度 */
+    height: 50px; /* 設置高度 */
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    display: none; /* 預設隱藏，只有在滾動到一定位置時才顯示 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    background-color: #B18C8C;
+}
+
+/* 當滑鼠懸停時變色 */
+#scrollToTopBtn:hover {
+    background-color: #8C6A6A;
+}

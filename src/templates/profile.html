@@ -1,0 +1,92 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人資料</title>
+    <!-- 內嵌 CSS -->
+    <style>
+        /* 全局設定 */
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F5F5DC; /* 米色背景 */
+            color: #444; /* 深灰文字顏色 */
+        }
+
+        /* 標題樣式 */
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 2rem;
+        }
+
+        /* 文字段落 */
+        p {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        /* 資訊清單區塊 */
+        ul {
+            list-style: none;
+            padding: 20px;
+            margin: 30px auto;
+            width: 80%;
+            max-width: 500px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #fff; /* 白色背景使資訊突出 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 柔和的陰影效果 */
+        }
+
+        /* 清單項目 */
+        ul li {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        ul li:last-child {
+            border-bottom: none;
+        }
+
+        /* 強調內容 */
+        #phone, #address {
+            font-weight: bold;
+            color: #134d65;
+        }
+
+        /* 歡迎訊息 */
+        #welcome-message {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1 id="welcome-message"></h1>
+    <p>聯絡資訊:</p>
+    <ul>
+        <li>電話號碼: <span id="phone"></span></li>
+        <li>住址: <span id="address"></span></li>
+    </ul>
+
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            alert('您尚未登入');
+            window.location.href = '/login.html';
+        } else {
+            document.getElementById('welcome-message').textContent = `歡迎, ${currentUser.username}!`;
+            document.getElementById('phone').textContent = currentUser.phone;
+            document.getElementById('address').textContent = currentUser.address;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>註冊</title>
+    <link rel="stylesheet" href="/src/asserts/styles/styles.css">
+    <link rel="icon" href="/src/asserts/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <h1>註冊</h1>
+    </header>
+        
+        <!-- 註冊表單 -->
+        <div class="form-container">
+            <form id="register-form">
+        
+                <label for="username">使用者名稱:</label>
+                <input type="text" id="username" name="username" placeholder="請輸入使用者名稱" required>
+                <br>
+                <label for="password">密碼:</label>
+                <input type="password" id="password" name="password" placeholder="請輸入密碼" required>
+                <br>
+                <label for="phone">電話號碼:</label>
+                <input type="text" id="phone" name="phone" placeholder="請輸入電話號碼" required>
+                <br>
+                <label for="address">住址:</label>
+                <input type="text" id="address" name="address" placeholder="請輸入住址" required>
+                <br>
+                <button type="submit">註冊</button>
+            </form>
+        </div>
+    
+
+    <script>
+        // 註冊表單提交處理
+        document.getElementById("register-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // 防止表單默認提交
+
+            // 收集表單資料
+            const formData = {
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value,
+                phone: document.getElementById("phone").value,
+                address: document.getElementById("address").value
+            };
+
+            // 使用 fetch 發送 POST 請求
+            fetch("http://localhost:5000/api/user/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"  // 設置為 JSON 格式
+                },
+                body: JSON.stringify(formData)  // 將資料轉換為 JSON 格式
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // 確保回傳為 JSON
+                } else {
+                    throw new Error("使用者名稱已被使用");
+                }
+            })
+            .then(data => {
+                alert(data.message || "註冊成功！");
+                // 註冊成功後跳轉到 home.html
+                window.location.href = "/src/templates/home.html";
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert(error.message || "註冊過程中發生錯誤，請稍後再試。");
+            });
+        });
+    </script>
+</body>
+</html>
